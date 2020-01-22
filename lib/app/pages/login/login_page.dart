@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:snowmanlabs/app/pages/login/login_controller.dart';
+import 'package:snowmanlabs/app/pages/login/login_module.dart';
 import 'package:snowmanlabs/app/pages/login/widgets/facebook_button.dart';
 import 'package:snowmanlabs/app/pages/login/widgets/logo_snowmanlabs.dart';
 import 'package:snowmanlabs/app/shared/constants/colors.dart';
@@ -12,8 +14,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  var controller = LoginModule.to.bloc<LoginController>();
+
   @override
   Widget build(BuildContext context) {
+    print(controller.loading);
 
     return Scaffold(
       backgroundColor: LOGIN_BACKGROUND_COLOR,
@@ -62,7 +68,6 @@ class _LoginPageState extends State<LoginPage> {
         FacebookButton(
           width: 250,
           onPressed: () {
-            print('sign in');
           },
           text: 'Sign in with facebook',
         ),
@@ -70,7 +75,6 @@ class _LoginPageState extends State<LoginPage> {
         FacebookButton(
           width: 250,
           onPressed: () {
-            print('sign up');
           },
           text: 'Sign up with facebook',
           darkMode: true,

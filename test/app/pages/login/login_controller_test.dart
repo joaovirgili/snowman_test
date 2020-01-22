@@ -10,7 +10,7 @@ void main() {
   LoginController login;
 
   setUp(() {
-    login = LoginModule.to.get<LoginController>();
+    login = LoginModule.to.bloc<LoginController>();
   });
 
   group('LoginController Test', () {
@@ -18,10 +18,16 @@ void main() {
       expect(login, isInstanceOf<LoginController>());
     });
 
-    test("Set Value", () {
-      expect(login.value, equals(0));
-      login.increment();
-      expect(login.value, equals(1));
+    test("Start loading", () {
+      expect(login.loading, equals(false));
+      login.startLoading();
+      expect(login.loading, equals(true));
+    });
+
+    test("Stop loading", () {
+      expect(login.loading, equals(true));
+      login.stopLoading();
+      expect(login.loading, equals(false));
     });
   });
 }

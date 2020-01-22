@@ -6,10 +6,11 @@ class LoginController = _LoginBase with _$LoginController;
 
 abstract class _LoginBase with Store {
   @observable
-  int value = 0;
+  bool loading = false;
 
   @action
-  void increment() {
-    value++;
-  }
+  void startLoading() => loading = true;
+
+  @action
+  void stopLoading() => loading = false;
 }

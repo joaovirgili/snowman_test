@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:snowmanlabs/app/shared/constants/colors.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -14,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
     var screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Color(0xfff3f3f6),
+      backgroundColor: LOGIN_BACKGROUND_COLOR,
       body: Center(
         child: Stack(
           children: <Widget>[

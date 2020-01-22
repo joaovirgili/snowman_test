@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:snowmanlabs/app/pages/home/home_module.dart';
 import 'package:snowmanlabs/app/pages/login/login_module.dart';
 
 class AppWidget extends StatelessWidget {

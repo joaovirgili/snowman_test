@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:snowmanlabs/app/pages/login/login_module.dart';
+import 'package:snowmanlabs/app/shared/route_generator.dart';
 
 class AppWidget extends StatelessWidget {
   @override
@@ -10,6 +11,7 @@ class AppWidget extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: LoginModule(),
+      onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
 }

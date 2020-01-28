@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:snowmanlabs/app/pages/login/login_controller.dart';
 import 'package:snowmanlabs/app/pages/login/login_module.dart';
-import 'package:snowmanlabs/app/pages/login/widgets/facebook_button.dart';
-import 'package:snowmanlabs/app/pages/login/widgets/logo_snowmanlabs.dart';
+import 'package:snowmanlabs/app/pages/login/widgets/loading_widget.dart';
+import 'package:snowmanlabs/app/pages/login/widgets/login_widget.dart';
 import 'package:snowmanlabs/app/shared/constants/colors.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,74 +15,47 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   var controller = LoginModule.to.bloc<LoginController>();
+
+  var mainBoxDecoration = BoxDecoration(
+    color: Colors.white,
+    borderRadius: BorderRadius.circular(5),
+    boxShadow: [BoxShadow(color: Colors.black12)],
+  );
 
   @override
   Widget build(BuildContext context) {
-    print(controller.loading);
-
     return Scaffold(
       backgroundColor: LOGIN_BACKGROUND_COLOR,
       body: Center(
         child: Stack(
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 22),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(5),
-                boxShadow: [BoxShadow(color: Colors.black12)],
-              ),
-              height: 400,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  LogoSnowManLabs(),
-                  SizedBox(height: 25),
-                  _buildTitleSection(),
-                  SizedBox(height: 50),
-                  _buildButtonsSection()
-                ],
-              ),
-            ),
+            // Here comes background image
+            Observer(
+              builder: (_) {
+                return AnimatedContainer(
+                  duration: Duration(milliseconds: 250),
+                  height: controller.loading ? 300 : 400,
+                  width: 300,
+                  onEnd: controller.stopAnimation,
+                  child: controller.loading
+                      ? LoadingWidget(decoration: mainBoxDecoration)
+                      : LoginWidget(
+                          decoration: mainBoxDecoration,
+                          singInOnTap: () {
+                            controller.startLoading();
+                            Future.delayed(Duration(seconds: 2)).then((_) {
+                              controller.stopLoading();
+                            });
+                          },
+                          showChildren: controller.showLoginWidgets,
+                        ),
+                );
+              },
+            )
           ],
         ),
       ),
     );
   }
-
-  Text _buildTitleSection() {
-    return Text(
-      'Challenge',
-      style: TextStyle(
-        color: MAIN_BLUE,
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-      ),
-    );
-  }
-
-  Column _buildButtonsSection() {
-    return Column(
-      children: <Widget>[
-        FacebookButton(
-          width: 250,
-          onPressed: () {
-          },
-          text: 'Sign in with facebook',
-        ),
-        SizedBox(height: 15),
-        FacebookButton(
-          width: 250,
-          onPressed: () {
-          },
-          text: 'Sign up with facebook',
-          darkMode: true,
-        ),
-      ],
-    );
-  }
 }
-
-

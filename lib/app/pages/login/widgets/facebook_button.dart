@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:snowmanlabs/app/shared/constants/colors.dart';
 
-class FacebookButton extends StatelessWidget {
-  const FacebookButton({
+class MyFacebookButton extends StatelessWidget {
+  const MyFacebookButton({
     Key key,
     this.darkMode = false,
     @required this.width,

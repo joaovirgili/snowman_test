@@ -1,7 +1,4 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:bloc_pattern/bloc_pattern_test.dart';
-
-import 'package:snowmanlabs/app/pages/home/home_page.dart';
 
 main() {
   testWidgets('HomePage has title', (WidgetTester tester) async {

@@ -8,9 +8,28 @@ abstract class _LoginBase with Store {
   @observable
   bool loading = false;
 
-  @action
-  void startLoading() => loading = true;
+  @observable
+  bool isAnimating = false;
+
+  @computed
+  bool get showLoginWidgets => isAnimating == false && loading == false;
 
   @action
-  void stopLoading() => loading = false;
+  void startLoading() {
+    loading = true;
+    startAnimation();
+  }
+
+  @action
+  void stopLoading() {
+    loading = false;
+    startAnimation();
+  }
+
+  @action
+  void startAnimation() => isAnimating = true;
+
+  @action
+  void stopAnimation() => isAnimating = false;
+
 }

@@ -6,10 +6,30 @@ class LoginController = _LoginBase with _$LoginController;
 
 abstract class _LoginBase with Store {
   @observable
-  int value = 0;
+  bool loading = false;
+
+  @observable
+  bool isAnimating = false;
+
+  @computed
+  bool get showLoginWidgets => isAnimating == false && loading == false;
 
   @action
-  void increment() {
-    value++;
+  void startLoading() {
+    loading = true;
+    startAnimation();
   }
+
+  @action
+  void stopLoading() {
+    loading = false;
+    startAnimation();
+  }
+
+  @action
+  void startAnimation() => isAnimating = true;
+
+  @action
+  void stopAnimation() => isAnimating = false;
+
 }

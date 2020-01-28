@@ -10,7 +10,7 @@ void main() {
   AppController app;
 
   setUp(() {
-    app = AppModule.to.get<AppController>();
+    app = AppModule.to.bloc<AppController>();
   });
 
   group('AppController Test', () {
@@ -18,10 +18,5 @@ void main() {
       expect(app, isInstanceOf<AppController>());
     });
 
-    test("Set Value", () {
-      expect(app.value, equals(0));
-      app.increment();
-      expect(app.value, equals(1));
-    });
   });
 }

@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
       body: Stack(
         children: <Widget>[
           GoogleMap(
-        mapType: MapType.hybrid,
+        mapType: MapType.normal,
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
@@ -41,8 +41,17 @@ class _HomePageState extends State<HomePage> {
       ),
         ],
       ),
+      floatingActionButton: FloatingActionButton.extended(
+        
+        onPressed: _goToTheLake, label: Text("asds"),
+      ),
       bottomNavigationBar: MyBottomNavigationBar(),
     );
+  }
+
+  Future<void> _goToTheLake() async {
+    final GoogleMapController controller = await _controller.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }
 

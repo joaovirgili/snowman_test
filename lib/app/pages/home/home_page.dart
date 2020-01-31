@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocation/geolocation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:snowmanlabs/app/pages/home/widgets/my_bottom_navigation_bar.dart';
+import 'package:snowmanlabs/app/pages/home/widgets/search_bar.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -49,26 +50,22 @@ class _HomePageState extends State<HomePage> {
     //   print(requestResult.error);
     // }
 
-    final GeolocationResult requestResult =
-        await Geolocation.requestLocationPermission(const LocationPermission(
+    await Geolocation.requestLocationPermission(const LocationPermission(
       android: LocationPermissionAndroid.fine,
       ios: LocationPermissionIOS.always,
     ));
 
-    StreamSubscription<LocationResult> subscription =
-        Geolocation.currentLocation(accuracy: LocationAccuracy.best)
-            .listen((result) async {
+    Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+        .listen((result) async {
       if (result.isSuccessful) {
-        print(result.location.toString());
         final CameraPosition _currentPosition = CameraPosition(
-          // bearing: 192.8334901395799,
           target: LatLng(result.location.latitude, result.location.longitude),
-          // tilt: 59.440717697143555,
           zoom: 15,
         );
 
         final GoogleMapController controller = await _controller.future;
-        controller.animateCamera(CameraUpdate.newCameraPosition(_currentPosition));
+        controller
+            .animateCamera(CameraUpdate.newCameraPosition(_currentPosition));
       } else {
         print(result.error);
       }
@@ -87,14 +84,10 @@ class _HomePageState extends State<HomePage> {
               _controller.complete(controller);
             },
           ),
+          SearchBar(),
         ],
       ),
       bottomNavigationBar: MyBottomNavigationBar(),
     );
-  }
-
-  Future<void> _goToTheLake() async {
-    final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
 }

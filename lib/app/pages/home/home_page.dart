@@ -1,8 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geolocation/geolocation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:snowmanlabs/app/shared/constants/colors.dart';
+import 'package:snowmanlabs/app/pages/home/widgets/my_bottom_navigation_bar.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -13,7 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
@@ -28,22 +28,66 @@ class _HomePageState extends State<HomePage> {
       zoom: 19.151926040649414);
 
   @override
+  void initState() {
+    super.initState();
+    _getLocation();
+  }
+
+  _getLocation() async {
+    // final GeolocationResult isOperationalResult = await Geolocation.isLocationOperational();
+    // if (isOperationalResult.isSuccessful) {
+    //   print("ok");
+    //   print(isOperationalResult.dataToString());
+    // } else {
+    //   print(isOperationalResult.error);
+    //   final GeolocationResult requestResult =
+    //       await Geolocation.requestLocationPermission(const LocationPermission(
+    //     android: LocationPermissionAndroid.fine,
+    //     ios: LocationPermissionIOS.always,
+    //   ));
+    //   print(requestResult.dataToString());
+    //   print(requestResult.error);
+    // }
+
+    final GeolocationResult requestResult =
+        await Geolocation.requestLocationPermission(const LocationPermission(
+      android: LocationPermissionAndroid.fine,
+      ios: LocationPermissionIOS.always,
+    ));
+
+    StreamSubscription<LocationResult> subscription =
+        Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+            .listen((result) async {
+      if (result.isSuccessful) {
+        print(result.location.toString());
+        final CameraPosition _currentPosition = CameraPosition(
+          // bearing: 192.8334901395799,
+          target: LatLng(result.location.latitude, result.location.longitude),
+          // tilt: 59.440717697143555,
+          zoom: 15,
+        );
+
+        final GoogleMapController controller = await _controller.future;
+        controller.animateCamera(CameraUpdate.newCameraPosition(_currentPosition));
+      } else {
+        print(result.error);
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
           GoogleMap(
-        mapType: MapType.normal,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
+            mapType: MapType.normal,
+            initialCameraPosition: _kGooglePlex,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+          ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton.extended(
-        
-        onPressed: _goToTheLake, label: Text("asds"),
       ),
       bottomNavigationBar: MyBottomNavigationBar(),
     );
@@ -52,39 +96,5 @@ class _HomePageState extends State<HomePage> {
   Future<void> _goToTheLake() async {
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
-  }
-}
-
-class MyBottomNavigationBar extends StatefulWidget {
-  const MyBottomNavigationBar({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  _MyBottomNavigationBarState createState() => _MyBottomNavigationBarState();
-}
-
-class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
-
-  var _currentIndex = 1;
-
-  @override
-  Widget build(BuildContext context) {
-    return BottomNavigationBar(
-      showSelectedLabels: false,
-      showUnselectedLabels: false,
-      selectedItemColor: MAIN_BLUE,
-      currentIndex: _currentIndex,
-      onTap: (index) {
-        setState(() {
-          _currentIndex = index;
-        });
-      },
-      items: [
-        BottomNavigationBarItem(icon: Icon(Icons.star), title: Text("")),
-        BottomNavigationBarItem(icon: Icon(Icons.map), title: Text("")),
-        BottomNavigationBarItem(icon: Icon(Icons.person), title: Text("")),
-      ],
-    );
   }
 }

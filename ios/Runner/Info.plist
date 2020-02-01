@@ -11,7 +11,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>snowmanlabs</string>
+	<string>snowman-test</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -39,7 +39,15 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Necessita para abrir o mapa com a localização atual do usuario.</string>
+	<key>NSLocationUsageDescription</key>
+	<string>Necessita para abrir o mapa com a localização atual do usuario.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Necessita para abrir o mapa com a localização atual do usuario.</string>
 </dict>
 </plist>

@@ -11,6 +11,9 @@ abstract class _LoginBase with Store {
   @observable
   bool isAnimating = false;
 
+  @observable
+  bool isLoggedIn = false;
+
   @computed
   bool get showLoginWidgets => isAnimating == false && loading == false;
 
@@ -31,5 +34,8 @@ abstract class _LoginBase with Store {
 
   @action
   void stopAnimation() => isAnimating = false;
+
+  @action
+  void setLoggedIn() => isLoggedIn = true;
 
 }

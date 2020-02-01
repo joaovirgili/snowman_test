@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocation/geolocation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:snowmanlabs/app/pages/home/home_module.dart';
 import 'package:snowmanlabs/app/pages/home/widgets/my_bottom_navigation_bar.dart';
-import 'package:snowmanlabs/app/pages/home/widgets/search_bar.dart';
+import 'package:snowmanlabs/app/pages/home/widgets/search_bar/search_bar.dart';
+import 'package:snowmanlabs/app/pages/home/widgets/search_bar/search_bar_controller.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -15,18 +17,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var searchBarController = HomeModule.to.bloc<SearchBarController>();
+
   Completer<GoogleMapController> _controller = Completer();
 
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
-
-  static final CameraPosition _kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
 
   @override
   void initState() {
@@ -35,21 +33,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   _getLocation() async {
-    // final GeolocationResult isOperationalResult = await Geolocation.isLocationOperational();
-    // if (isOperationalResult.isSuccessful) {
-    //   print("ok");
-    //   print(isOperationalResult.dataToString());
-    // } else {
-    //   print(isOperationalResult.error);
-    //   final GeolocationResult requestResult =
-    //       await Geolocation.requestLocationPermission(const LocationPermission(
-    //     android: LocationPermissionAndroid.fine,
-    //     ios: LocationPermissionIOS.always,
-    //   ));
-    //   print(requestResult.dataToString());
-    //   print(requestResult.error);
-    // }
-
     await Geolocation.requestLocationPermission(const LocationPermission(
       android: LocationPermissionAndroid.fine,
       ios: LocationPermissionIOS.always,
@@ -85,6 +68,38 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           SearchBar(),
+          Positioned(
+            bottom: 100,
+            child: Row(
+              children: <Widget>[
+                Text("Recents"),
+                RaisedButton(
+                  onPressed: searchBarController.addRecent,
+                  child: Icon(Icons.add),
+                ),
+                RaisedButton(
+                  onPressed: searchBarController.removeRecent,
+                  child: Icon(Icons.remove),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            child: Row(
+              children: <Widget>[
+                Text("Favorits"),
+                RaisedButton(
+                  onPressed: searchBarController.addFavorit,
+                  child: Icon(Icons.add),
+                ),
+                RaisedButton(
+                  onPressed: searchBarController.removeFavorit,
+                  child: Icon(Icons.remove),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: MyBottomNavigationBar(),

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobx/mobx.dart';
 import 'package:snowmanlabs/app/pages/login/login_controller.dart';
 import 'package:snowmanlabs/app/pages/login/login_module.dart';
 import 'package:snowmanlabs/app/pages/login/widgets/loading_widget.dart';
 import 'package:snowmanlabs/app/pages/login/widgets/login_widget.dart';
 import 'package:snowmanlabs/app/shared/constants/colors.dart';
-import 'package:snowmanlabs/app/shared/constants/routes.dart';
 
 class LoginPage extends StatefulWidget {
   final String title;
@@ -24,23 +22,6 @@ class _LoginPageState extends State<LoginPage> {
     borderRadius: BorderRadius.circular(5),
     boxShadow: [BoxShadow(color: Colors.black12)],
   );
-
-  ReactionDisposer loggedInReaction;
-
-  @override
-  void initState() {
-    loggedInReaction = autorun((_) {
-      if (controller.isLoggedIn) {
-        Navigator.pushNamedAndRemoveUntil(
-            context,
-            ROUTE_HOME,
-            (Route<dynamic> route) => false,
-          );
-
-      }
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +45,7 @@ class _LoginPageState extends State<LoginPage> {
                           singInOnTap: () {
                             controller.startLoading();
                             Future.delayed(Duration(seconds: 2)).then((_) {
-                              controller.setLoggedIn();
+                              controller.stopLoading();
                             });
                           },
                           showChildren: controller.showLoginWidgets,

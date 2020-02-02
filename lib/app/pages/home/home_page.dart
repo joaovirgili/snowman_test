@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:geolocation/geolocation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:snowmanlabs/app/pages/home/home_controller.dart';
 import 'package:snowmanlabs/app/pages/home/home_module.dart';
 import 'package:snowmanlabs/app/pages/home/widgets/my_bottom_navigation_bar.dart';
 import 'package:snowmanlabs/app/pages/home/widgets/register_spot_bottomsheet/register_spot_bottomsheet.dart';
@@ -17,22 +19,33 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   var searchBarController = HomeModule.to.bloc<SearchBarController>();
+  var homeController = HomeModule.to.bloc<HomeController>();
 
   Completer<GoogleMapController> _controller = Completer();
-
   static final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
 
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  AnimationController registerSpotController;
+  Animation<Offset> registerSpotOffset;
+  Animation<Offset> searchBarOffset;
 
   @override
   void initState() {
     super.initState();
     _getLocation();
+    registerSpotController =
+        AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+
+    registerSpotOffset = Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero).animate(
+        CurvedAnimation(parent: registerSpotController, curve: Curves.easeOut));
+
+    searchBarOffset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, -1.0)).animate(
+        CurvedAnimation(parent: registerSpotController, curve: Curves.easeOut));
   }
 
   _getLocation() async {
@@ -58,18 +71,19 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void _showBottomSheet() {
-    _scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) {
-      return RegisterSpotBottomSheet();
-    });
+  _openRegisterSpot() {
+    homeController.toggleRegisterSpot();
+    return registerSpotController.forward();
+  }
 
-    
+  _closeRegisterSpot() {
+    homeController.toggleRegisterSpot();
+    return registerSpotController.reverse();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldKey,
       body: Stack(
         children: <Widget>[
           GoogleMap(
@@ -79,46 +93,55 @@ class _HomePageState extends State<HomePage> {
               _controller.complete(controller);
             },
           ),
-          SearchBar(),
-          Positioned(
-            bottom: 150,
-            child: RaisedButton(
-              onPressed: () => _showBottomSheet(),
-              child: Text("Register spot"),
+          SlideTransition(
+            child: SearchBar(suffixOnTap: _openRegisterSpot),
+            position: searchBarOffset,
+          ),
+          SlideTransition(
+            position: registerSpotOffset,
+            child: RegisterSpotBottomSheet(
+              closeBottomSheet: _closeRegisterSpot,
             ),
           ),
-          Positioned(
-            bottom: 100,
-            child: Row(
-              children: <Widget>[
-                Text("Recents"),
-                RaisedButton(
-                  onPressed: searchBarController.addRecent,
-                  child: Icon(Icons.add),
-                ),
-                RaisedButton(
-                  onPressed: searchBarController.removeRecent,
-                  child: Icon(Icons.remove),
-                ),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 50,
-            child: Row(
-              children: <Widget>[
-                Text("Favorits"),
-                RaisedButton(
-                  onPressed: searchBarController.addFavorit,
-                  child: Icon(Icons.add),
-                ),
-                RaisedButton(
-                  onPressed: searchBarController.removeFavorit,
-                  child: Icon(Icons.remove),
-                ),
-              ],
-            ),
-          ),
+          // Positioned(
+          //   bottom: 150,
+          //   child: RaisedButton(
+          //     onPressed: _openRegisterSpot,
+          //     child: Text("Register spot"),
+          //   ),
+          // ),
+          // Positioned(
+          //   bottom: 100,
+          //   child: Row(
+          //     children: <Widget>[
+          //       Text("Recents"),
+          //       RaisedButton(
+          //         onPressed: searchBarController.addRecent,
+          //         child: Icon(Icons.add),
+          //       ),
+          //       RaisedButton(
+          //         onPressed: searchBarController.removeRecent,
+          //         child: Icon(Icons.remove),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // Positioned(
+          //   bottom: 50,
+          //   child: Row(
+          //     children: <Widget>[
+          //       Text("Favorits"),
+          //       RaisedButton(
+          //         onPressed: searchBarController.addFavorit,
+          //         child: Icon(Icons.add),
+          //       ),
+          //       RaisedButton(
+          //         onPressed: searchBarController.removeFavorit,
+          //         child: Icon(Icons.remove),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
       bottomNavigationBar: MyBottomNavigationBar(),

@@ -6,6 +6,11 @@ import 'package:snowmanlabs/app/pages/home/widgets/search_bar/widgets/places_lis
 import 'package:snowmanlabs/app/shared/constants/colors.dart';
 
 class SearchBar extends StatefulWidget {
+
+  final Function suffixOnTap;
+
+  const SearchBar({Key key, this.suffixOnTap}) : super(key: key);
+
   @override
   _SearchBarState createState() => _SearchBarState();
 }
@@ -76,9 +81,7 @@ class _SearchBarState extends State<SearchBar> {
           IconButton(
             padding: EdgeInsets.all(0),
             icon: Icon(Icons.add, size: 25, color: Colors.black45),
-            onPressed: () {
-              print("asdas");
-            },
+            onPressed: widget.suffixOnTap,
           ),
         ],
       ),

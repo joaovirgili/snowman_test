@@ -14,51 +14,60 @@ class RegisterForm extends StatelessWidget {
             child: Form(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Name",
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "Name",
+                        ),
                       ),
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Categories",
+                      SizedBox(height: 10),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "Categories",
+                        ),
                       ),
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(FontAwesomeIcons.mapMarkerAlt, color: MAIN_BLUE),
-                        border: OutlineInputBorder(),
-                        labelText: "Location",
+                      SizedBox(height: 10),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(FontAwesomeIcons.mapMarkerAlt,
+                              color: MAIN_BLUE),
+                          border: OutlineInputBorder(),
+                          labelText: "Location",
+                        ),
                       ),
-                    ),
-                    TextFormField(
-                      decoration: InputDecoration(
-                        suffixIcon: Icon(FontAwesomeIcons.solidCircle,
-                            color: Colors.red),
-                        border: OutlineInputBorder(),
-                        labelText: "Pin Color",
+                      SizedBox(height: 10),
+                      TextFormField(
+                        decoration: InputDecoration(
+                          suffixIcon: Icon(FontAwesomeIcons.solidCircle,
+                              color: Colors.red),
+                          border: OutlineInputBorder(),
+                          labelText: "Pin Color",
+                        ),
                       ),
-                    ),
-                    Row(
-                      children: <Widget>[
-                        Expanded(
-                          child: RaisedButton(
-                            onPressed: () => {},
-                            color: Color(0xffffbe00),
-                            child: Text(
-                              "Add Spot",
-                              style: TextStyle(color: MAIN_BLUE, fontWeight: FontWeight.bold),
+                      SizedBox(height: 25),
+                      Row(
+                        children: <Widget>[
+                          Expanded(
+                            child: RaisedButton(
+                              onPressed: () => {},
+                              color: Color(0xffffbe00),
+                              child: Text(
+                                "Add Spot",
+                                style: TextStyle(
+                                    color: MAIN_BLUE,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

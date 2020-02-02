@@ -33,6 +33,8 @@ class _HomePageState extends State<HomePage>
   Animation<Offset> registerSpotOffset;
   Animation<Offset> searchBarOffset;
 
+  FocusNode _searchBarFocusNode;
+
   @override
   void initState() {
     super.initState();
@@ -40,11 +42,17 @@ class _HomePageState extends State<HomePage>
     registerSpotController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
 
-    registerSpotOffset = Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero).animate(
-        CurvedAnimation(parent: registerSpotController, curve: Curves.easeOut));
+    registerSpotOffset =
+        Tween<Offset>(begin: Offset(0.0, 1.0), end: Offset.zero).animate(
+            CurvedAnimation(
+                parent: registerSpotController, curve: Curves.easeOut));
 
-    searchBarOffset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, -1.0)).animate(
-        CurvedAnimation(parent: registerSpotController, curve: Curves.easeOut));
+    searchBarOffset = Tween<Offset>(begin: Offset.zero, end: Offset(0.0, -1.0))
+        .animate(CurvedAnimation(
+            parent: registerSpotController, curve: Curves.easeOut));
+
+    _searchBarFocusNode = FocusNode();
+    // });
   }
 
   _getLocation() async {
@@ -70,13 +78,9 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-  _openRegisterSpot() {
-    return registerSpotController.forward();
-  }
+  _openRegisterSpot() => registerSpotController.forward();
 
-  _closeRegisterSpot() {
-    return registerSpotController.reverse();
-  }
+  _closeRegisterSpot() => registerSpotController.reverse();
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +88,9 @@ class _HomePageState extends State<HomePage>
       body: Stack(
         children: <Widget>[
           GoogleMap(
+            onTap: (latLng) {
+              _searchBarFocusNode.unfocus();
+            },
             mapType: MapType.normal,
             initialCameraPosition: _kGooglePlex,
             onMapCreated: (GoogleMapController controller) {
@@ -91,7 +98,10 @@ class _HomePageState extends State<HomePage>
             },
           ),
           SlideTransition(
-            child: SearchBar(suffixOnTap: _openRegisterSpot),
+            child: SearchBar(
+              suffixOnTap: _openRegisterSpot,
+              focusNode: _searchBarFocusNode,
+            ),
             position: searchBarOffset,
           ),
           SlideTransition(
@@ -107,38 +117,38 @@ class _HomePageState extends State<HomePage>
           //     child: Text("Register spot"),
           //   ),
           // ),
-          // Positioned(
-          //   bottom: 100,
-          //   child: Row(
-          //     children: <Widget>[
-          //       Text("Recents"),
-          //       RaisedButton(
-          //         onPressed: searchBarController.addRecent,
-          //         child: Icon(Icons.add),
-          //       ),
-          //       RaisedButton(
-          //         onPressed: searchBarController.removeRecent,
-          //         child: Icon(Icons.remove),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // Positioned(
-          //   bottom: 50,
-          //   child: Row(
-          //     children: <Widget>[
-          //       Text("Favorits"),
-          //       RaisedButton(
-          //         onPressed: searchBarController.addFavorit,
-          //         child: Icon(Icons.add),
-          //       ),
-          //       RaisedButton(
-          //         onPressed: searchBarController.removeFavorit,
-          //         child: Icon(Icons.remove),
-          //       ),
-          //     ],
-          //   ),
-          // ),
+          Positioned(
+            bottom: 100,
+            child: Row(
+              children: <Widget>[
+                Text("Recents"),
+                RaisedButton(
+                  onPressed: searchBarController.addRecent,
+                  child: Icon(Icons.add),
+                ),
+                RaisedButton(
+                  onPressed: searchBarController.removeRecent,
+                  child: Icon(Icons.remove),
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 50,
+            child: Row(
+              children: <Widget>[
+                Text("Favorits"),
+                RaisedButton(
+                  onPressed: searchBarController.addFavorit,
+                  child: Icon(Icons.add),
+                ),
+                RaisedButton(
+                  onPressed: searchBarController.removeFavorit,
+                  child: Icon(Icons.remove),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
       bottomNavigationBar: MyBottomNavigationBar(),

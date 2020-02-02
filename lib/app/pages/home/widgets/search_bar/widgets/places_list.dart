@@ -8,25 +8,19 @@ class PlacesList extends StatelessWidget {
     Key key,
     this.recents = const <PlaceItemModel>[],
     this.favorits = const <PlaceItemModel>[],
+    this.height,
   }) : super(key: key);
 
   final List<PlaceItemModel> recents;
   final List<PlaceItemModel> favorits;
-
-  double _calculateHeight() {
-    var height = 0.0;
-    if (recents.isNotEmpty) height += 50;
-    if (favorits.isNotEmpty) height += 50;
-    height += (recents.length + favorits.length) * 70.0;
-    return height < 300 ? height : 300;
-  }
+  final double height;
 
   @override
   Widget build(BuildContext context) {
-    return recents.isNotEmpty || favorits.isNotEmpty
+    return (recents.isNotEmpty || favorits.isNotEmpty) && height > 0.0
         ? Container(
             margin: EdgeInsets.only(bottom: 10),
-            height: _calculateHeight(),
+            height: height,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border(top: BorderSide(color: MAIN_GREY)),

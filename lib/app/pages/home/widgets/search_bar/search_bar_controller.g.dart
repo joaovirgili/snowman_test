@@ -43,8 +43,47 @@ mixin _$SearchBarController on _SearchBarBase, Store {
     }, _$favoritsAtom, name: '${_$favoritsAtom.name}_set');
   }
 
+  final _$isPlacesListOpenedAtom =
+      Atom(name: '_SearchBarBase.isPlacesListOpened');
+
+  @override
+  bool get isPlacesListOpened {
+    _$isPlacesListOpenedAtom.context
+        .enforceReadPolicy(_$isPlacesListOpenedAtom);
+    _$isPlacesListOpenedAtom.reportObserved();
+    return super.isPlacesListOpened;
+  }
+
+  @override
+  set isPlacesListOpened(bool value) {
+    _$isPlacesListOpenedAtom.context.conditionallyRunInAction(() {
+      super.isPlacesListOpened = value;
+      _$isPlacesListOpenedAtom.reportChanged();
+    }, _$isPlacesListOpenedAtom, name: '${_$isPlacesListOpenedAtom.name}_set');
+  }
+
   final _$_SearchBarBaseActionController =
       ActionController(name: '_SearchBarBase');
+
+  @override
+  void openPlacesList() {
+    final _$actionInfo = _$_SearchBarBaseActionController.startAction();
+    try {
+      return super.openPlacesList();
+    } finally {
+      _$_SearchBarBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void closePlacesList() {
+    final _$actionInfo = _$_SearchBarBaseActionController.startAction();
+    try {
+      return super.closePlacesList();
+    } finally {
+      _$_SearchBarBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void addRecent() {

@@ -6,20 +6,37 @@ import 'package:snowmanlabs/app/pages/home/widgets/search_bar/widgets/places_lis
 import 'package:snowmanlabs/app/shared/constants/colors.dart';
 
 class SearchBar extends StatefulWidget {
-
   final Function suffixOnTap;
+  final FocusNode focusNode;
 
-  const SearchBar({Key key, this.suffixOnTap}) : super(key: key);
+  const SearchBar({Key key, this.suffixOnTap, this.focusNode})
+      : super(key: key);
 
   @override
   _SearchBarState createState() => _SearchBarState();
 }
 
-class _SearchBarState extends State<SearchBar> {
-  var _isOpened = true;
+class _SearchBarState extends State<SearchBar> with TickerProviderStateMixin {
   var _searchTextStyle = TextStyle(color: Colors.grey, fontSize: 15);
 
   var controller = HomeModule.to.bloc<SearchBarController>();
+
+  double _calculateHeight() {
+    var height = 0.0;
+    if (controller.recents.isNotEmpty) height += 50;
+    if (controller.favorits.isNotEmpty) height += 50;
+    height += (controller.recents.length + controller.favorits.length) * 70.0;
+    return height < 300 ? height : 300;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    widget.focusNode.addListener(() => widget.focusNode.hasFocus
+        ? controller.openPlacesList()
+        : controller.closePlacesList());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +51,19 @@ class _SearchBarState extends State<SearchBar> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           _buildSearchSection(),
-          if (_isOpened)
-            Observer(builder: (_) {
-              return PlacesList(
+          Observer(builder: (_) {
+            return AnimatedSize(
+              duration: Duration(milliseconds: 300),
+              vsync: this,
+              curve: Curves.easeOut,
+              child: PlacesList(
                 favorits: controller.favorits,
                 recents: controller.recents,
-              );
-            }),
+                height:
+                    controller.isPlacesListOpened ? _calculateHeight() : 0.0,
+              ),
+            );
+          }),
         ],
       ),
     );
@@ -58,6 +81,7 @@ class _SearchBarState extends State<SearchBar> {
           ),
           Expanded(
             child: TextField(
+              focusNode: widget.focusNode,
               textAlignVertical: TextAlignVertical.bottom,
               style: _searchTextStyle,
               decoration: InputDecoration(
@@ -66,11 +90,6 @@ class _SearchBarState extends State<SearchBar> {
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.only(bottom: 12),
               ),
-              onTap: () {
-                setState(() {
-                  _isOpened = !_isOpened;
-                });
-              },
             ),
           ),
           Container(

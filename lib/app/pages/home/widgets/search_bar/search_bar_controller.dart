@@ -11,28 +11,15 @@ abstract class _SearchBarBase with Store {
 
   @observable
   ObservableList<PlaceItemModel> favorits = ObservableList<PlaceItemModel>();
-  // [
-  //   PlaceItemModel(
-  //     name: "Jardim Botanico",
-  //     location: "Cristo Rei - Curitiba, Brazil",
-  //   ),
-  //   PlaceItemModel(
-  //     name: "Jardim Botanico",
-  //     location: "Cristo Rei - Curitiba, Brazil",
-  //   ),
-  //   PlaceItemModel(
-  //     name: "Jardim Botanico",
-  //     location: "Cristo Rei - Curitiba, Brazil",
-  //   ),
-  // ];
 
-  // @observable
-  // List<PlaceItemModel> favorits = [
-  //   PlaceItemModel(
-  //     name: "Pão de Açúcar",
-  //     location: "Rio de Janeiro - Brazil",
-  //   ),
-  // ];
+  @observable
+  bool isPlacesListOpened = false;
+
+  @action
+  void openPlacesList() => isPlacesListOpened = true;
+
+  @action
+  void closePlacesList() => isPlacesListOpened = false;
 
   @action
   void addRecent() {

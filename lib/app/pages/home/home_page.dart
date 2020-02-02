@@ -5,6 +5,7 @@ import 'package:geolocation/geolocation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:snowmanlabs/app/pages/home/home_module.dart';
 import 'package:snowmanlabs/app/pages/home/widgets/my_bottom_navigation_bar.dart';
+import 'package:snowmanlabs/app/pages/home/widgets/register_spot_bottomsheet/register_spot_bottomsheet.dart';
 import 'package:snowmanlabs/app/pages/home/widgets/search_bar/search_bar.dart';
 import 'package:snowmanlabs/app/pages/home/widgets/search_bar/search_bar_controller.dart';
 
@@ -25,6 +26,8 @@ class _HomePageState extends State<HomePage> {
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -55,9 +58,18 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _showBottomSheet() {
+    _scaffoldKey.currentState.showBottomSheet<void>((BuildContext context) {
+      return RegisterSpotBottomSheet();
+    });
+
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       body: Stack(
         children: <Widget>[
           GoogleMap(
@@ -68,6 +80,13 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           SearchBar(),
+          Positioned(
+            bottom: 150,
+            child: RaisedButton(
+              onPressed: () => _showBottomSheet(),
+              child: Text("Register spot"),
+            ),
+          ),
           Positioned(
             bottom: 100,
             child: Row(

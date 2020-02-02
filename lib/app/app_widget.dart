@@ -15,6 +15,7 @@ class AppWidget extends StatelessWidget {
       title: 'Flutter Slidy',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent)
       ),
       home: LoginModule(),
       onGenerateRoute: RouteGenerator.generateRoute,

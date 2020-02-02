@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:snowmanlabs/app/shared/constants/colors.dart';
 
 class MyBottomNavigationBar extends StatefulWidget {
@@ -28,7 +29,7 @@ class _MyBottomNavigationBarState extends State<MyBottomNavigationBar> {
       },
       items: [
         BottomNavigationBarItem(icon: Icon(Icons.star), title: Text("")),
-        BottomNavigationBarItem(icon: Icon(Icons.map), title: Text("")),
+        BottomNavigationBarItem(icon: Icon(FontAwesomeIcons.mapMarkerAlt), title: Text("")),
         BottomNavigationBarItem(icon: Icon(Icons.person), title: Text("")),
       ],
     );

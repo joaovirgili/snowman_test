@@ -110,39 +110,39 @@ class _HomePageState extends State<HomePage>
             ),
           ),
           // This simlates add/remove recents.
-          Positioned(
-            bottom: 100,
-            child: Row(
-              children: <Widget>[
-                Text("Recents"),
-                RaisedButton(
-                  onPressed: searchBarController.addRecent,
-                  child: Icon(Icons.add),
-                ),
-                RaisedButton(
-                  onPressed: searchBarController.removeRecent,
-                  child: Icon(Icons.remove),
-                ),
-              ],
-            ),
-          ),
+          // Positioned(
+          //   bottom: 100,
+          //   child: Row(
+          //     children: <Widget>[
+          //       Text("Recents"),
+          //       RaisedButton(
+          //         onPressed: searchBarController.addRecent,
+          //         child: Icon(Icons.add),
+          //       ),
+          //       RaisedButton(
+          //         onPressed: searchBarController.removeRecent,
+          //         child: Icon(Icons.remove),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           // This simlates add/remove favorits.
-          Positioned(
-            bottom: 50,
-            child: Row(
-              children: <Widget>[
-                Text("Favorits"),
-                RaisedButton(
-                  onPressed: searchBarController.addFavorit,
-                  child: Icon(Icons.add),
-                ),
-                RaisedButton(
-                  onPressed: searchBarController.removeFavorit,
-                  child: Icon(Icons.remove),
-                ),
-              ],
-            ),
-          ),
+          // Positioned(
+          //   bottom: 50,
+          //   child: Row(
+          //     children: <Widget>[
+          //       Text("Favorits"),
+          //       RaisedButton(
+          //         onPressed: searchBarController.addFavorit,
+          //         child: Icon(Icons.add),
+          //       ),
+          //       RaisedButton(
+          //         onPressed: searchBarController.removeFavorit,
+          //         child: Icon(Icons.remove),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
       bottomNavigationBar: MyBottomNavigationBar(),

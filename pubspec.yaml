@@ -18,7 +18,7 @@ environment:
 
 dependencies:
   cached_network_image: ^2.0.0
-  geolocation: ^1.0.1
+  # geolocation: ^1.0.1
   google_maps_flutter: ^0.5.21+17
   font_awesome_flutter: ^8.5.0
   dio: ^3.0.8

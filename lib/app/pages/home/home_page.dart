@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:geolocation/geolocation.dart';
+// import 'package:geolocation/geolocation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:snowmanlabs/app/pages/home/home_controller.dart';
 import 'package:snowmanlabs/app/pages/home/home_module.dart';
@@ -38,7 +38,7 @@ class _HomePageState extends State<HomePage>
   @override
   void initState() {
     super.initState();
-    _getLocation();
+    // _getLocation();
     registerSpotController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 500));
 
@@ -52,31 +52,30 @@ class _HomePageState extends State<HomePage>
             parent: registerSpotController, curve: Curves.easeOut));
 
     _searchBarFocusNode = FocusNode();
-    // });
   }
 
-  _getLocation() async {
-    await Geolocation.requestLocationPermission(const LocationPermission(
-      android: LocationPermissionAndroid.fine,
-      ios: LocationPermissionIOS.always,
-    ));
+  // _getLocation() async {
+  //   await Geolocation.requestLocationPermission(const LocationPermission(
+  //     android: LocationPermissionAndroid.fine,
+  //     ios: LocationPermissionIOS.always,
+  //   ));
 
-    Geolocation.currentLocation(accuracy: LocationAccuracy.best)
-        .listen((result) async {
-      if (result.isSuccessful) {
-        final CameraPosition _currentPosition = CameraPosition(
-          target: LatLng(result.location.latitude, result.location.longitude),
-          zoom: 15,
-        );
+  //   Geolocation.currentLocation(accuracy: LocationAccuracy.best)
+  //       .listen((result) async {
+  //     if (result.isSuccessful) {
+  //       final CameraPosition _currentPosition = CameraPosition(
+  //         target: LatLng(result.location.latitude, result.location.longitude),
+  //         zoom: 15,
+  //       );
 
-        final GoogleMapController controller = await _controller.future;
-        controller
-            .animateCamera(CameraUpdate.newCameraPosition(_currentPosition));
-      } else {
-        print(result.error);
-      }
-    });
-  }
+  //       final GoogleMapController controller = await _controller.future;
+  //       controller
+  //           .animateCamera(CameraUpdate.newCameraPosition(_currentPosition));
+  //     } else {
+  //       print(result.error);
+  //     }
+  //   });
+  // }
 
   _openRegisterSpot() => registerSpotController.forward();
 
@@ -110,13 +109,7 @@ class _HomePageState extends State<HomePage>
               closeBottomSheet: _closeRegisterSpot,
             ),
           ),
-          // Positioned(
-          //   bottom: 150,
-          //   child: RaisedButton(
-          //     onPressed: _openRegisterSpot,
-          //     child: Text("Register spot"),
-          //   ),
-          // ),
+          // This simlates add/remove recents.
           Positioned(
             bottom: 100,
             child: Row(
@@ -133,6 +126,7 @@ class _HomePageState extends State<HomePage>
               ],
             ),
           ),
+          // This simlates add/remove favorits.
           Positioned(
             bottom: 50,
             child: Row(

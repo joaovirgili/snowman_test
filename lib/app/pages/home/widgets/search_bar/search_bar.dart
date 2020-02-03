@@ -36,6 +36,10 @@ class _SearchBarState extends State<SearchBar> with TickerProviderStateMixin {
     widget.focusNode.addListener(() => widget.focusNode.hasFocus
         ? controller.openPlacesList()
         : controller.closePlacesList());
+
+    controller.addRecent();
+    controller.addRecent();
+    controller.addFavorit();
   }
 
   @override

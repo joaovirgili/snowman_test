@@ -7,8 +7,9 @@ Implemented using [Slidy](https://github.com/Flutterando/slidy), [bloc_pattern](
 <img src="https://github.com/joaovirgili/snowman_test/blob/master/screenshots/app.gif" width="350" />
 
 # Getting started
-- Clone project
-- Run `flutter packages get` to download packages used
+- Clone project.
+- Run `flutter packages get` to download used packages.
+- Add Google Maps API key replacing `API_KEY_HERE` in android/app/src/main/AndroidManifest.xml and ios/Runner/AppDelegate.swift
 - Run `flutter run` to start the project.
 
 # Screenshots

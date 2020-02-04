@@ -50,6 +50,23 @@ mixin _$LoginController on _LoginBase, Store {
     }, _$isAnimatingAtom, name: '${_$isAnimatingAtom.name}_set');
   }
 
+  final _$isLoggedInAtom = Atom(name: '_LoginBase.isLoggedIn');
+
+  @override
+  bool get isLoggedIn {
+    _$isLoggedInAtom.context.enforceReadPolicy(_$isLoggedInAtom);
+    _$isLoggedInAtom.reportObserved();
+    return super.isLoggedIn;
+  }
+
+  @override
+  set isLoggedIn(bool value) {
+    _$isLoggedInAtom.context.conditionallyRunInAction(() {
+      super.isLoggedIn = value;
+      _$isLoggedInAtom.reportChanged();
+    }, _$isLoggedInAtom, name: '${_$isLoggedInAtom.name}_set');
+  }
+
   final _$_LoginBaseActionController = ActionController(name: '_LoginBase');
 
   @override
@@ -87,6 +104,16 @@ mixin _$LoginController on _LoginBase, Store {
     final _$actionInfo = _$_LoginBaseActionController.startAction();
     try {
       return super.stopAnimation();
+    } finally {
+      _$_LoginBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void setLoggedIn() {
+    final _$actionInfo = _$_LoginBaseActionController.startAction();
+    try {
+      return super.setLoggedIn();
     } finally {
       _$_LoginBaseActionController.endAction(_$actionInfo);
     }
